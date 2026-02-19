@@ -23,7 +23,7 @@ public class ProductController {
     @Autowired
     private UserService userService;
 
-    // ✅ SELLER → Add product
+    //  SELLER → Add product
     @PostMapping
     @PreAuthorize("hasRole('SELLER')")
     public String addProduct(@RequestBody Product product,
@@ -34,35 +34,35 @@ public class ProductController {
         User seller = userService.getByEmail(email);
 
         // map sellerId from JWT
-        product.setSellerId(seller.getUserId().intValue());
+        product.setSellerId((long) seller.getUserId().intValue());
 
         productService.addProduct(product);
 
         return "Product added successfully";
     }
 
-    // ✅ PUBLIC → View all products
+    //  PUBLIC → View all products
     @GetMapping
     public List<Product> getAllProducts() {
         return productService.viewAllProducts();
     }
 
-    // ✅ PUBLIC → Search
+    //  PUBLIC → Search
     @GetMapping("/search")
     public List<Product> searchProducts(@RequestParam String keyword) {
         return productService.searchProducts(keyword);
     }
 
-    // ✅ PUBLIC → Filter by category
+    //  PUBLIC → Filter by category
     @GetMapping("/category/{categoryId}")
     public List<Product> byCategory(@PathVariable int categoryId) {
         return productService.viewProductsByCategory(categoryId);
     }
 
-    // ✅ SELLER → Update
+    //  SELLER → Update
     @PutMapping("/{id}")
     @PreAuthorize("hasRole('SELLER')")
-    public String updateProduct(@PathVariable int id,
+    public String updateProduct(@PathVariable Long id,
                                 @RequestBody Product product) {
 
         product.setProductId(id);
@@ -72,22 +72,22 @@ public class ProductController {
         return "Product updated";
     }
 
-    // ✅ SELLER → Delete
+    //  SELLER → Delete
     @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('SELLER')")
-    public String deleteProduct(@PathVariable int id,
+    public String deleteProduct(@PathVariable Long id,
                                 Authentication authentication) {
 
         String email = authentication.getName();
 
         User seller = userService.getByEmail(email);
 
-        productService.deleteProduct(id, seller.getUserId().intValue());
+        productService.deleteProduct(Math.toIntExact(id), seller.getUserId().intValue());
 
         return "Product deleted";
     }
 
-    // ✅ SELLER → My inventory
+    // SELLER → My inventory
     @GetMapping("/seller")
     @PreAuthorize("hasRole('SELLER')")
     public List<Product> sellerProducts(Authentication authentication) {

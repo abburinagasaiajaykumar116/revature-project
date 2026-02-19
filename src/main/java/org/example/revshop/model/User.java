@@ -8,14 +8,14 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long userId;
+    private Integer userId;
 
     private String name;
     @Column(unique = true)
     private String email;
     private String password;
 
-    public User(Long userId, String name, String email, String password, String role, String businessDetails, String securityQuestion, String securityAnswer) {
+    public User(Integer userId, String name, String email, String password, String role, String businessDetails, String securityQuestion, String securityAnswer) {
         this.userId = userId;
         this.name = name;
         this.email = email;
@@ -56,11 +56,11 @@ public class User {
 
 
 
-    public Long getUserId() {
+    public Integer getUserId() {
         return userId;
     }
 
-    public void setUserId(Long userId) {
+    public void setUserId(Integer userId) {
         this.userId = userId;
     }
 
