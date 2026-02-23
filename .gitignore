@@ -31,3 +31,7 @@ build/
 
 ### VS Code ###
 .vscode/
+
+revshop-frontend/node_modules/
+revshop-frontend/dist/
+revshop-frontend/.angular/
