@@ -65,7 +65,7 @@ public class ProductController {
     public String updateProduct(@PathVariable int id,
                                 @RequestBody Product product) {
 
-        product.setProductId(id);
+        product.setProductId((long) id);
 
         productService.updateProduct(product);
 

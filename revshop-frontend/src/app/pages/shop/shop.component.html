@@ -1,0 +1,104 @@
+  <div class="container mt-4">
+
+    <div class="row">
+
+      <!-- LEFT CATEGORY SIDEBAR -->
+      <div class="col-md-3">
+
+        <div class="list-group">
+
+          <button class="list-group-item list-group-item-action"
+                  [class.active]="selectedCategory === null"
+                  (click)="loadAllProducts()">
+            All Categories
+          </button>
+
+          <button *ngFor="let cat of categories"
+                  class="list-group-item list-group-item-action"
+                  [class.active]="selectedCategory === cat.categoryId"
+                  (click)="loadByCategory(cat.categoryId)">
+            {{ cat.categoryName }}
+          </button>
+
+        </div>
+
+      </div>
+
+      <!-- RIGHT PRODUCTS GRID -->
+      <div class="col-md-9">
+
+        <div class="row">
+
+          <div class="col-lg-4 col-md-6 col-sm-6 mb-4"
+              *ngFor="let product of products">
+
+            <div class="card shadow-sm h-100">
+
+              <div class="position-relative">
+
+                <!-- ❤️ HEART ICON (TOP RIGHT) -->
+                <button class="btn position-absolute top-0 end-0 m-2 p-0 border-0 bg-transparent"
+                        (click)="toggleWishlist(product.productId)">
+
+                  <i class="bi"
+                    [ngClass]="(favorites$ | async)?.includes(product.productId)
+            ? 'bi-heart-fill text-danger'
+            : 'bi-heart'"
+                    style="cursor:pointer; font-size: 20px;">
+                  </i>
+
+                </button>
+
+                <!-- PRODUCT IMAGE -->
+                <img 
+                  [src]="product.imageUrl || 'assets/no-image.png'"
+                  class="card-img-top"
+                  style="height: 220px; object-fit: cover; cursor:pointer"
+                  (click)="viewProduct(product.productId)">
+
+              </div>
+
+              <div class="card-body d-flex flex-column">
+
+                <h6>{{ product.name }}</h6>
+
+                <div class="mb-2">
+                  ₹{{ product.price }}
+                  <span class="text-muted text-decoration-line-through"
+                        *ngIf="product.mrp">
+                    ₹{{ product.mrp }}
+                  </span>
+                </div>
+
+                <!-- QUANTITY CONTROLS -->
+                <div class="d-flex align-items-center justify-content-between mb-3">
+
+                  <button class="btn btn-outline-secondary btn-sm"
+                          (click)="decreaseQty(product.productId)">-</button>
+
+                  <span>{{ quantityMap[product.productId] }}</span>
+
+                  <button class="btn btn-outline-secondary btn-sm"
+                          (click)="increaseQty(product.productId)">+</button>
+
+                </div>
+
+                <!-- ADD TO CART BUTTON -->
+                <button class="btn btn-primary w-100"
+                        (click)="addToCart(product)">
+                  Add to Cart
+                </button>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>

@@ -1,0 +1,157 @@
+<!-- 1️⃣ Top Blue Bar -->
+<div class="top-bar text-center text-white py-1">
+  Welcome to the RevShop!
+</div>
+
+<!-- 2️⃣ Info Strip -->
+<div class="info-bar py-2">
+  <div class="container d-flex justify-content-between small">
+
+    <div>
+      100% Secure delivery from our Partnered Delivery Platform
+    </div>
+
+    <div>
+      Need help? Call Us:
+      <span class="text-primary fw-bold">+91 9876543210</span>
+      &nbsp; | &nbsp;
+      English | INR
+    </div>
+
+  </div>
+</div>
+
+<!-- 3️⃣ Main Header -->
+<div class="main-header py-3 shadow-sm">
+  <div class="container d-flex align-items-center justify-content-between">
+
+    <!-- Logo -->
+    <div class="logo fw-bold fs-4 text-primary">
+      RevShop.com
+      <div class="small text-muted">Safe • Secure • Reliable Shopping</div>
+    </div>
+
+    <!-- Search -->
+  <div class="search-box mx-4 flex-grow-1">
+  <input class="form-control search-input"
+         [(ngModel)]="searchKeyword"
+         (keyup.enter)="searchProducts()"
+         placeholder="Search for products...">
+</div>
+    <!--Cart-->
+   <!-- Cart Icon -->
+<!-- Cart Icon -->
+<div class="icon-item position-relative"
+     [style.visibility]="showCart ? 'hidden' : 'visible'"
+     (click)="openCart()">
+
+
+  <i class="bi bi-cart fs-5"></i>
+
+  <span class="cart-badge"
+        *ngIf="getCartCount() > 0">
+    {{ getCartCount() }}
+  </span>
+
+</div>
+
+
+<!-- CART MODAL -->
+<div class="cart-overlay"
+     *ngIf="showCart"
+     (click)="closeCart()">
+
+  <div class="cart-modal"
+       (click)="$event.stopPropagation()">
+
+    <div class="cart-header">
+      <h5>Your Cart</h5>
+      <button (click)="closeCart()">✕</button>
+    </div>
+
+    <div *ngFor="let item of cartItems"
+         class="cart-item">
+
+   
+
+      <div>
+        <div>{{ item.productName }}</div>
+        <div>{{ item.quantity }} × ₹{{ item.price }}</div>
+      </div>
+
+    </div>
+
+    <div class="subtotal">
+      Subtotal:
+      ₹{{ subtotal.toLocaleString('en-IN') }}
+    </div>
+<button class="btn btn-outline-secondary w-100"
+        (click)="goToCart()">
+  View Cart
+</button>
+
+
+    <button class="btn btn-danger w-100 mt-2"  (click)="goToCheckout()">
+      Checkout
+    </button>
+    <button class="btn btn-outline-danger w-100 mt-2"
+        (click)="clearCart()">
+  Clear Cart
+</button>
+
+
+  </div>
+
+</div>
+
+
+  
+
+  
+
+  </div>
+</div>
+
+<!-- 4️⃣ Navigation Bar -->
+<nav class="navbar navbar-expand-lg navbar-light bg-white border-top">
+  <div class="container">
+
+   
+
+    <div class="collapse navbar-collapse">
+
+      <ul class="navbar-nav ms-auto gap-4 fw-semibold">
+
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/home">HOME</a>
+        </li>
+
+      <li class="nav-item">
+  <a class="nav-link"
+     routerLink="/shop"
+     routerLinkActive="active">
+     SHOP
+  </a>
+</li>
+
+        <li class="nav-item">
+          <a class="nav-link">ABOUT US</a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link">SUPPORT</a>
+        </li>
+
+        <li class="nav-item">
+       <a class="nav-link" routerLink="/wishlist">WISHLIST</a>
+        </li>
+
+        <li class="nav-item">
+          <a class="btn btn-account" (click)="goToAccount()">MY ACCOUNT</a>
+        </li>
+
+      </ul>
+
+    </div>
+  </div>
+</nav>
