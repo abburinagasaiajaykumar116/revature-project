@@ -1,0 +1,94 @@
+<div class="container mt-4">
+
+  <h4>Your Cart</h4>
+
+  <div *ngIf="cartItems.length === 0">
+    <p>Your cart is empty</p>
+  </div>
+
+  <div class="row" *ngIf="cartItems.length > 0">
+
+    <!-- LEFT SIDE ITEMS -->
+    <div class="col-md-8">
+
+      <div class="card mb-3"
+           *ngFor="let item of cartItems">
+
+        <div class="card-body d-flex align-items-center">
+
+          <img [src]="item.imageUrl"
+               width="80"
+               class="me-3">
+
+          <div class="flex-grow-1">
+
+            <h6>{{ item.productName }}</h6>
+            <p>₹{{ item.price }}</p>
+
+            <div class="d-flex align-items-center">
+
+              <button class="btn btn-light"
+                      (click)="decreaseQty(item)">-</button>
+
+              <span class="mx-3">{{ item.quantity }}</span>
+
+              <button class="btn btn-light"
+                      (click)="increaseQty(item)">+</button>
+
+            </div>
+
+          </div>
+
+          <div class="text-end">
+
+            <h6>₹{{ item.price * item.quantity }}</h6>
+
+            <button class="btn btn-sm btn-danger mt-2"
+                    (click)="removeItem(item)">
+              ✕
+            </button>
+
+          </div>
+
+        </div>
+
+      </div>
+
+      <button class="btn btn-outline-danger"
+              (click)="clearCart()">
+        Remove All
+      </button>
+
+    </div>
+
+    <!-- RIGHT SIDE TOTALS -->
+    <div class="col-md-4">
+
+      <div class="card p-3">
+
+        <h5>Cart Totals</h5>
+
+        <div class="d-flex justify-content-between">
+          <span>Subtotal</span>
+          <strong>₹{{ subtotal }}</strong>
+        </div>
+
+        <hr>
+
+        <div class="d-flex justify-content-between">
+          <span>Total</span>
+          <strong>₹{{ subtotal }}</strong>
+        </div>
+
+        <button class="btn btn-primary w-100 mt-3"
+                (click)="proceedCheckout()">
+          Proceed to Checkout
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>

@@ -1,0 +1,74 @@
+<div class="container mt-4">
+
+  <div class="row">
+
+    <!-- LEFT SIDE FORM -->
+    <div class="col-md-7">
+
+      <h4>Billing Details</h4>
+
+      <div class="mb-3">
+        <label>Shipping Address</label>
+        <textarea class="form-control"
+                  [(ngModel)]="shippingAddress">
+        </textarea>
+      </div>
+
+      <div class="mb-3">
+        <label>Billing Address</label>
+        <textarea class="form-control"
+                  [(ngModel)]="billingAddress">
+        </textarea>
+      </div>
+
+      <div class="mb-3">
+        <label>Payment Method</label>
+        <select class="form-control"
+                [(ngModel)]="paymentMethod">
+          <option value="COD">Cash on Delivery</option>
+          <option value="UPI">UPI</option>
+          <option value="CARD">Card</option>
+        </select>
+      </div>
+
+    </div>
+
+    <!-- RIGHT SIDE ORDER SUMMARY -->
+    <div class="col-md-5">
+
+      <div class="card p-3">
+
+        <h5>Your Order</h5>
+
+        <div *ngFor="let item of cartItems"
+             class="d-flex justify-content-between">
+
+          <div>
+            {{ item.productName }} × {{ item.quantity }}
+          </div>
+
+          <div>
+            ₹{{ item.price * item.quantity }}
+          </div>
+
+        </div>
+
+        <hr>
+
+        <div class="d-flex justify-content-between">
+          <strong>Total</strong>
+          <strong>₹{{ subtotal }}</strong>
+        </div>
+
+        <button class="btn btn-primary w-100 mt-3"
+                (click)="placeOrder()">
+          Place Order
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
