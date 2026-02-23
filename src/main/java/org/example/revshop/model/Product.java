@@ -10,7 +10,7 @@ public class Product {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long productId;
+    private Integer productId;
     private String name;
 
     @Column(length = 2000)
@@ -21,7 +21,7 @@ public class Product {
     private Double discount;
     private Integer stockThreshold;
 
-    public Product(Long productId, String name, String description, Double price, Double mrp, Double discount, Integer stockThreshold, Boolean isActive, Integer stockQuantity, Long sellerId, Integer categoryId) {
+    public Product(Integer productId, String name, String description, Double price, Double mrp, Double discount, Integer stockThreshold, Boolean isActive, Integer stockQuantity, Integer sellerId, Integer categoryId) {
         this.productId = productId;
         this.name = name;
         this.description = description;
@@ -37,22 +37,22 @@ public class Product {
 
     private Boolean isActive = true;
     private Integer stockQuantity;
-    private Long sellerId;
+    private Integer sellerId;
     private Integer categoryId;
 
-    public Long getProductId() {
+    public Integer getProductId() {
         return productId;
     }
 
-    public void setProductId(Long productId) {
+    public void setProductId(Integer productId) {
         this.productId = productId;
     }
 
-    public Long getSellerId() {
+    public Integer getSellerId() {
         return sellerId;
     }
 
-    public void setSellerId(Long sellerId) {
+    public void setSellerId(Integer sellerId) {
         this.sellerId = sellerId;
     }
 

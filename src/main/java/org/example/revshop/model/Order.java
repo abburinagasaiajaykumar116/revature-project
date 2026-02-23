@@ -1,98 +1,51 @@
 package org.example.revshop.model;
 
-import jakarta.persistence.*;
 
-import java.util.List;
-
-@Entity
-@Table(name = "orders")
 public class Order {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "order_id")
-    private Long orderId;
+    private int orderId;
+    private int userId;
+    private double totalAmount;
+    private String status;
+    private String shippingAddress;
+    private String billingAddress;
 
-    private Long userId;
+    public Order() {}
 
-    public Order(Long orderId, Long userId, double totalAmount, String status, String shippingAddress, String billingAddress, List<OrderItem> orderItems) {
+    public Order(int orderId, int userId, double totalAmount,
+                 String status, String shippingAddress,
+                 String billingAddress) {
         this.orderId = orderId;
         this.userId = userId;
         this.totalAmount = totalAmount;
         this.status = status;
         this.shippingAddress = shippingAddress;
         this.billingAddress = billingAddress;
-        this.orderItems = orderItems;
     }
 
-    private double totalAmount;
+    // Getters & Setters
+    public int getOrderId() { return orderId; }
+    public void setOrderId(int orderId) { this.orderId = orderId; }
 
-    private String status;
+    public int getUserId() { return userId; }
+    public void setUserId(int userId) { this.userId = userId; }
 
-    private String shippingAddress;
-
-    private String billingAddress;
-    @OneToMany(mappedBy = "order")
-    private List<OrderItem> orderItems;
-
-
-    public List<OrderItem> getOrderItems() {
-        return orderItems;
-    }
-
-    public void setOrderItems(List<OrderItem> orderItems) {
-        this.orderItems = orderItems;
-    }
-
-    public void setOrderId(Long orderId) {
-        this.orderId = orderId;
-    }
-
-
-
-    public Order() {}
-
-    public Long getOrderId() {
-        return orderId;
-    }
-
-    public Long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
-    }
-
-    public double getTotalAmount() {
-        return totalAmount;
-    }
-
+    public double getTotalAmount() { return totalAmount; }
     public void setTotalAmount(double totalAmount) {
         this.totalAmount = totalAmount;
     }
 
-    public String getStatus() {
-        return status;
-    }
+    public String getStatus() { return status; }
+    public void setStatus(String status) { this.status = status; }
 
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public String getShippingAddress() {
-        return shippingAddress;
-    }
-
+    public String getShippingAddress() { return shippingAddress; }
     public void setShippingAddress(String shippingAddress) {
         this.shippingAddress = shippingAddress;
     }
 
-    public String getBillingAddress() {
-        return billingAddress;
-    }
-
+    public String getBillingAddress() { return billingAddress; }
     public void setBillingAddress(String billingAddress) {
         this.billingAddress = billingAddress;
     }
 }
+

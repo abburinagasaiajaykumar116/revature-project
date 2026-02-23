@@ -32,7 +32,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/auth/**").permitAll()
 
-                        //  allow public browsing
+                        // ✅ allow public browsing
                         .requestMatchers(
                                 "/products",
                                 "/products/search/**",
