@@ -1,20 +1,27 @@
 package org.example.revshop.model;
 
+import jakarta.persistence.*;
 
+@Entity
+@Table(name = "carts")
 public class Cart {
-    private int cartId;
-    private int userId;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "cart_id")
+    private Long cartId;
+    @Column(name = "user_id")
+    private Integer userId;
 
     public Cart() {}
 
-    public Cart(int cartId, int userId) {
+    public Cart(Long cartId, Integer userId) {
         this.cartId = cartId;
         this.userId = userId;
     }
 
-    public int getCartId() { return cartId; }
-    public void setCartId(int cartId) { this.cartId = cartId; }
+    public Long getCartId() { return cartId; }
+    public void setCartId(Long cartId) { this.cartId = cartId; }
 
-    public int getUserId() { return userId; }
-    public void setUserId(int userId) { this.userId = userId; }
+    public Integer getUserId() { return userId; }
+    public void setUserId(Integer userId) { this.userId = userId; }
 }

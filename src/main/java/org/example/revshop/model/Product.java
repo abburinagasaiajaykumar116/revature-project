@@ -1,16 +1,25 @@
 package org.example.revshop.model;
 
-
-
 import jakarta.persistence.*;
+
+import java.time.LocalDateTime;
+
 
 @Entity
 @Table(name = "products")
 public class Product {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer productId;
+    @Column(name = "product_id")
+    private Long productId;
+
+    @Column(name = "seller_id", nullable = false)
+    private Integer sellerId;
+
+    @Column(name = "category_id", nullable = false)
+    private Integer categoryId;
+
+    @Column(nullable = false)
     private String name;
 
     @Column(length = 2000)
@@ -19,32 +28,44 @@ public class Product {
     private Double price;
     private Double mrp;
     private Double discount;
+
+    @Column(name = "stock_quantity")
+    private Integer stockQuantity;
+
+    @Column(name = "stock_threshold")
     private Integer stockThreshold;
 
-    public Product(Integer productId, String name, String description, Double price, Double mrp, Double discount, Integer stockThreshold, Boolean isActive, Integer stockQuantity, Integer sellerId, Integer categoryId) {
+    @Column(name = "is_active")
+    private Boolean isActive = true;
+
+    @Column(name = "image_url")
+    private String imageUrl;
+
+    @Column(name = "created_at")
+    private java.time.LocalDateTime createdAt;
+
+    public Product(Long productId, Integer sellerId, Integer categoryId, String name, String description, Double price, Double mrp, Double discount, Integer stockQuantity, Integer stockThreshold, Boolean isActive, String imageUrl, LocalDateTime createdAt) {
         this.productId = productId;
+        this.sellerId = sellerId;
+        this.categoryId = categoryId;
         this.name = name;
         this.description = description;
         this.price = price;
         this.mrp = mrp;
         this.discount = discount;
+        this.stockQuantity = stockQuantity;
         this.stockThreshold = stockThreshold;
         this.isActive = isActive;
-        this.stockQuantity = stockQuantity;
-        this.sellerId = sellerId;
-        this.categoryId = categoryId;
+        this.imageUrl = imageUrl;
+        this.createdAt = createdAt;
     }
+    public Product(){}
 
-    private Boolean isActive = true;
-    private Integer stockQuantity;
-    private Integer sellerId;
-    private Integer categoryId;
-
-    public Integer getProductId() {
+    public Long getProductId() {
         return productId;
     }
 
-    public void setProductId(Integer productId) {
+    public void setProductId(Long productId) {
         this.productId = productId;
     }
 
@@ -104,6 +125,14 @@ public class Product {
         this.discount = discount;
     }
 
+    public Integer getStockQuantity() {
+        return stockQuantity;
+    }
+
+    public void setStockQuantity(Integer stockQuantity) {
+        this.stockQuantity = stockQuantity;
+    }
+
     public Integer getStockThreshold() {
         return stockThreshold;
     }
@@ -120,23 +149,23 @@ public class Product {
         isActive = active;
     }
 
-    public Integer getStockQuantity() {
-        return stockQuantity;
+    public String getImageUrl() {
+        return imageUrl;
     }
 
-    public void setStockQuantity(Integer stockQuantity) {
-        this.stockQuantity = stockQuantity;
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
     }
 
 
-   public  Product(){}
 
 
-
-
-
-
-
-
-    // getters setters
 }
