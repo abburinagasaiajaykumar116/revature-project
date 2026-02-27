@@ -32,6 +32,7 @@ RxJS
 
 
 📦 Features
+
 👤 Authentication & Authorization
 
 User Registration
@@ -40,7 +41,7 @@ Secure Login
 
 JWT-based Authentication
 
-Role-based access control (Admin / User)
+Role-based access control (BUYER/SELLER)
 
 🛍 Product Management
 
@@ -143,10 +144,11 @@ ng serve
 Frontend runs at:
 
 http://localhost:4200
+
 🔐 Default Roles
 Role	Access
-USER	Shop, Cart, Orders
-ADMIN	Product Management, Inventory
+BUYER	Shop, Cart, Orders
+SELLER	Product Management, Inventory
 
 🧪 API Testing (Postman)
 
@@ -169,6 +171,7 @@ POST /api/products
 Add to Cart:
 
 POST /api/cart
+
 🛡 Security
 
 Password encrypted using BCrypt
@@ -193,5 +196,5 @@ CI/CD automation
 
 🧑‍💻 Author
 
-Developed by Ajay Kumar
+Developed by RevShop  Team
 Java Full Stack Developer
