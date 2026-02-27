@@ -1,6 +1,7 @@
 RevShop – E-Commerce Web Application
 RevShop is a full-stack E-Commerce web application built using Spring Boot (Backend) and Angular (Frontend).
 It supports authentication, product management, cart system, order processing, and secure JWT-based authorization.
+
 🚀 Tech Stack
 
 🔹 Backend
@@ -74,6 +75,7 @@ Stock management
 Low stock threshold tracking
 
 🏗 Project Architecture
+
 revshop
  ├── config
  ├── controller
