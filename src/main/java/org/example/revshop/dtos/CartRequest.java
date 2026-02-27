@@ -1,8 +1,16 @@
 package org.example.revshop.dtos;
 public class CartRequest {
 
-    private Long productId;
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
 
+    public void setProductId(Long productId) {
+        this.productId = productId;
+    }
+
+    private Long productId;
+    private int quantity;
     public int getQuantity() {
         return quantity;
     }
@@ -11,5 +19,5 @@ public class CartRequest {
         return productId;
     }
 
-    private int quantity;
+
 }

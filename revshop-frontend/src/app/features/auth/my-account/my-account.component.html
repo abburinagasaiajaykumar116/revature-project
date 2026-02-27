@@ -1,0 +1,206 @@
+<div class="container mt-5" style="max-width: 600px;">
+
+  <div class="text-center mb-4">
+    <div class="btn-group w-100 shadow-sm">
+      <button class="btn"
+              [ngClass]="activeTab === 'login' ? 'btn-dark' : 'btn-light'"
+              (click)="switchTab('login')">
+        Login
+      </button>
+
+      <button class="btn"
+              [ngClass]="activeTab === 'register' ? 'btn-dark' : 'btn-light'"
+              (click)="switchTab('register')">
+        Sign Up
+      </button>
+    </div>
+  </div>
+
+  <div *ngIf="activeTab === 'login'" class="card p-4 shadow-sm border-0 animate-fade-in">
+    <form #loginForm="ngForm">
+      <div class="mb-3">
+        <label class="form-label fw-bold small">Email Address</label>
+        <input class="form-control"
+               name="loginEmail"
+               placeholder="Enter your email"
+               [(ngModel)]="loginEmail"
+               required
+               email
+               #lEmail="ngModel">
+        <div class="text-danger mt-1 small" *ngIf="lEmail.invalid && lEmail.touched">
+          <i class="bi bi-exclamation-circle me-1"></i> Please enter a valid email.
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label fw-bold small">Password</label>
+        <input class="form-control"
+               name="loginPassword"
+               type="password"
+               placeholder="Enter your password"
+               [(ngModel)]="loginPassword"
+               required
+               #lPass="ngModel">
+        <div class="text-danger mt-1 small" *ngIf="lPass.invalid && lPass.touched">
+          <i class="bi bi-exclamation-circle me-1"></i> Password is required.
+        </div>
+      </div>
+
+      <div class="text-danger mb-3 p-2 bg-danger-subtle rounded small" *ngIf="errorMessage">
+        {{ errorMessage }}
+      </div>
+
+      <button class="btn btn-primary w-100 py-2 fw-bold"
+              [disabled]="loginForm.invalid"
+              (click)="login()">
+        Sign In
+      </button>
+
+      <div class="text-end mt-3">
+        <a style="cursor:pointer" class="text-decoration-none small fw-bold" (click)="startForgotPassword()">
+          Forgot Password?
+        </a>
+      </div>
+    </form>
+  </div>
+
+  <div *ngIf="activeTab === 'register'" class="card p-4 shadow-sm border-0 animate-fade-in">
+    <form #regForm="ngForm">
+      <div class="mb-3">
+        <label class="form-label fw-bold small">Full Name</label>
+        <input class="form-control" name="name" placeholder="Name" [(ngModel)]="name"
+               required minlength="3" #regName="ngModel">
+        <div class="text-danger mt-1 small" *ngIf="regName.invalid && regName.touched">
+          Name must be at least 3 characters.
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label fw-bold small">Email Address</label>
+        <input class="form-control" name="email" placeholder="Email" [(ngModel)]="email"
+               required email #regEmail="ngModel">
+        <div class="text-danger mt-1 small" *ngIf="regEmail.invalid && regEmail.touched">
+          Valid email is required.
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label fw-bold small">Password</label>
+        <input class="form-control" name="password" type="password" placeholder="Min 6 characters"
+               [(ngModel)]="password" required minlength="6" #regPass="ngModel">
+        <div class="text-danger mt-1 small" *ngIf="regPass.invalid && regPass.touched">
+          Password must be at least 6 characters.
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label fw-bold small">Register as</label>
+        <select class="form-select" name="role" [(ngModel)]="role" required>
+          <option value="BUYER">Buyer</option>
+          <option value="SELLER">Seller</option>
+        </select>
+      </div>
+
+      <div *ngIf="role === 'SELLER'" class="mb-3">
+        <label class="form-label fw-bold small">Business Details</label>
+        <input class="form-control" name="businessDetails" placeholder="Business Name/Info"
+               [(ngModel)]="businessDetails" required #biz="ngModel">
+        <div class="text-danger mt-1 small" *ngIf="biz.invalid && biz.touched">
+          Required for Seller accounts.
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-6 mb-3">
+          <label class="form-label fw-bold small">Security Question</label>
+          <input class="form-control" name="securityQuestion" placeholder="e.g., Favorite city?"
+                 [(ngModel)]="securityQuestion" required>
+        </div>
+        <div class="col-md-6 mb-3">
+          <label class="form-label fw-bold small">Security Answer</label>
+          <input class="form-control" name="securityAnswer" placeholder="Answer"
+                 [(ngModel)]="securityAnswer" required>
+        </div>
+      </div>
+
+      <div class="alert alert-success p-2 small" *ngIf="successMessage">
+        {{ successMessage }}
+      </div>
+
+      <div class="alert alert-danger p-2 small" *ngIf="errorMessage">
+        {{ errorMessage }}
+      </div>
+
+      <button class="btn btn-primary w-100 py-2 fw-bold"
+              [disabled]="regForm.invalid"
+              (click)="register()">
+        Create Account
+      </button>
+    </form>
+  </div>
+
+  <div *ngIf="activeTab === 'forgot'" class="card p-4 shadow-sm border-0 animate-fade-in">
+    <h5 class="fw-bold mb-3">Reset Password</h5>
+
+    <div *ngIf="forgotStep === 1">
+      <input class="form-control mb-3" name="fEmail" placeholder="Enter registered email"
+             [(ngModel)]="forgotEmail" required email #fe="ngModel">
+      <button class="btn btn-primary w-100" [disabled]="fe.invalid" (click)="fetchSecurityQuestion()">
+        Fetch Question
+      </button>
+    </div>
+
+    <div *ngIf="forgotStep === 2">
+      <p class="mb-3 p-2 bg-light rounded"><strong>Q:</strong> {{ securityQuestionFromDB }}</p>
+      <input class="form-control mb-3" name="fAns" placeholder="Your Answer"
+             [(ngModel)]="forgotAnswer" required #fa="ngModel">
+      <button class="btn btn-primary w-100" [disabled]="fa.invalid" (click)="verifyAnswer()">
+        Verify Identity
+      </button>
+    </div>
+
+    <div *ngIf="forgotStep === 3">
+      <form #resetForm="ngForm">
+        <div class="mb-2">
+          <input class="form-control"
+                 name="newPass"
+                 type="password"
+                 placeholder="New Password (Min 6 chars)"
+                 [(ngModel)]="newPassword"
+                 required
+                 minlength="6"
+                 #np="ngModel">
+        </div>
+
+        <div class="mb-3">
+          <input class="form-control"
+                 name="confPass"
+                 type="password"
+                 placeholder="Confirm New Password"
+                 [(ngModel)]="confirmPassword"
+                 required
+                 #cp="ngModel">
+
+          <div class="text-danger mt-1 small" *ngIf="confirmPassword && newPassword !== confirmPassword">
+            <i class="bi bi-exclamation-triangle me-1"></i> Passwords do not match!
+          </div>
+        </div>
+
+        <button class="btn btn-success w-100 py-2 fw-bold"
+                type="button"
+                [disabled]="resetForm.invalid || newPassword !== confirmPassword || !newPassword"
+                (click)="resetPassword()">
+          Update Password
+        </button>
+      </form>
+    </div>
+
+    <div class="alert alert-danger mt-3 small" *ngIf="errorMessage && forgotStep !== 3">
+      {{ errorMessage }}
+    </div>
+
+    <div class="text-center mt-3">
+      <a style="cursor:pointer" class="small text-muted" (click)="switchTab('login')">Back to Login</a>
+    </div>
+  </div>
+</div>

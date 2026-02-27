@@ -34,4 +34,7 @@ public class JwtProvider {
                 .getBody()
                 .getSubject();
     }
+    public Key getKey() {
+        return key;
+    }
 }

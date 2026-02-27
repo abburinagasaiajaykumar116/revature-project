@@ -28,7 +28,7 @@ public class NotificationController {
         return notificationService.getUserNotifications(user.getUserId());
     }
 
-    //  Create notification (for testing/admin)
+    //  Create notification
     @PostMapping("/send")
     public String sendNotification(@RequestParam Integer userId,
                                    @RequestParam String message) {

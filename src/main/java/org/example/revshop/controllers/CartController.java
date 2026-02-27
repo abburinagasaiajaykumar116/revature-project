@@ -23,12 +23,12 @@ public class CartController {
     @Autowired private UserService userService;
 
     private Integer getUserId(Authentication auth) {
-        return Integer.valueOf(Math.toIntExact(userService.getByEmail(auth.getName()).getUserId()));
+        return Integer.valueOf(userService.getByEmail(auth.getName()).getUserId());
     }
 
     @PostMapping
     public ResponseEntity<Map<String,String>> add(Authentication auth,
-                                                  @RequestBody CartRequest req) {
+                      @RequestBody CartRequest req) {
 
         cartService.add(
                 getUserId(auth),
@@ -39,7 +39,7 @@ public class CartController {
         return ResponseEntity.ok().body(Map.of("message", "Added to cart"));
 
     }
-    @GetMapping
+        @GetMapping
     public List<CartResponse> view(Authentication auth) {
         return cartService.view(getUserId(auth));
     }

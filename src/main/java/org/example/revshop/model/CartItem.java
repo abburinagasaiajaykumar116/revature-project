@@ -62,5 +62,4 @@ public class CartItem {
 
 
 
-    // getters setters
 }

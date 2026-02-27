@@ -21,20 +21,18 @@ public class ReviewController {
     private final UserService userService;
 
     @PostMapping("/{productId}")
-    public String giveReview(Authentication auth,
-                             @PathVariable Long productId,
-                             @RequestBody ReviewRequest req) {
+    public ReviewView giveReview(Authentication auth,
+                                 @PathVariable Long productId,
+                                 @RequestBody ReviewRequest req) {
 
         User user = userService.getByEmail(auth.getName());
 
-        reviewService.giveReview(
+        return reviewService.giveReview(
                 user.getUserId(),
                 productId,
                 req.getRating(),
                 req.getComment()
         );
-
-        return "Review submitted";
     }
     @GetMapping("/product/{productId}")
     public List<ReviewView> productReviews(@PathVariable Long productId) {

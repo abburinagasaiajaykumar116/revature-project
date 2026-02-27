@@ -1,0 +1,190 @@
+<div class="container mt-5">
+
+  <div class="row">
+
+    <div class="col-md-3">
+      <ul class="list-group shadow-sm">
+        <li class="list-group-item" [class.active]="activeTab==='dashboard'" (click)="activeTab='dashboard'" style="cursor:pointer">
+          Dashboard
+        </li>
+        <li class="list-group-item" [class.active]="activeTab==='orders'" (click)="activeTab='orders'; loadOrders()" style="cursor:pointer">
+          Orders
+        </li>
+        <li class="list-group-item" [class.active]="activeTab==='inventory'" (click)="activeTab='inventory'; loadInventory()" style="cursor:pointer">
+          Manage Products
+        </li>
+        <li class="list-group-item" [class.active]="activeTab==='addProduct'" (click)="activeTab='addProduct'" style="cursor:pointer">
+          Add Product
+        </li>
+        <li class="list-group-item" [class.active]="activeTab==='profile'" (click)="activeTab='profile'" style="cursor:pointer">
+          Profile
+        </li>
+        <li class="list-group-item" [class.active]="activeTab==='password'" (click)="activeTab='password'" style="cursor:pointer">
+          Change Password
+        </li>
+        <li class="list-group-item" [class.active]="activeTab==='notifications'" (click)="activeTab='notifications'; loadNotifications()" style="cursor:pointer">
+          Notifications
+        </li>
+        <li class="list-group-item" [class.active]="activeTab==='reviews'" (click)="activeTab='reviews'" style="cursor:pointer">
+          Product Reviews
+        </li>
+        <li class="list-group-item text-danger" (click)="logout()" style="cursor:pointer">
+          Logout
+        </li>
+      </ul>
+    </div>
+
+    <div class="col-md-9">
+
+      <div *ngIf="activeTab==='dashboard'">
+        <h4>Welcome {{ profile?.name }}</h4>
+        <p>Email: {{ profile?.email }}</p>
+        <p>Business: {{ profile?.businessDetails }}</p>
+      </div>
+
+
+        <div *ngIf="activeTab==='orders'">
+          <h4 class="mb-4">Recent Orders</h4>
+
+          <div *ngFor="let order of orders" class="card mb-3 p-3 border-0 shadow-sm rounded-3">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+              <h5 class="m-0 text-primary">Order ID: #{{ order.orderId }}</h5>
+              <span class="badge rounded-pill px-3 py-2"
+                    [ngClass]="{
+              'bg-success': order.status === 'DELIVERED' || order.status === 'PLACED',
+              'bg-warning': order.status === 'PENDING',
+              'bg-info': order.status === 'SHIPPED'
+            }">
+        {{ order.status }}
+      </span>
+            </div>
+
+            <div class="row">
+              <div class="col-md-6">
+                <p class="mb-1"><strong>Product:</strong> {{ order.productName }}</p>
+                <p class="mb-1 text-muted"><strong>Customer:</strong> {{ order.customerName }}</p>
+
+                <div class="mt-2 p-2 bg-light rounded-2 border-start border-3 border-danger">
+                  <small class="text-uppercase fw-bold text-muted d-block" style="font-size: 0.75rem;">
+                    <i class="bi bi-geo-alt-fill text-danger"></i> Shipping Address
+                  </small>
+                  <p class="mb-0 small text-dark">{{ order.shippingAddress }}</p>
+                </div>
+              </div>
+
+              <div class="col-md-6 text-md-end">
+                <p class="mb-1"><strong>Quantity:</strong> {{ order.quantity }}</p>
+                <p class="mb-0"><strong>Price:</strong> ₹{{ order.price | number:'1.2-2' }}</p>
+              </div>
+            </div>
+          </div>
+
+          <div *ngIf="orders.length === 0" class="alert alert-info rounded-3">
+            No orders found yet.
+          </div>
+        </div>
+
+      <div *ngIf="activeTab==='inventory'">
+        <div *ngFor="let product of inventory" class="card mb-3 p-3" [ngClass]="{'opacity-50': !product.isActive}">
+          <h5>
+            {{ product.name }}
+            <span *ngIf="!product.isActive" class="badge bg-secondary ms-2">Inactive</span>
+          </h5>
+          <p>Price: ₹{{ product.price }}</p>
+          <p>Stock: {{ product.stockQuantity }}</p>
+          <button class="btn btn-warning btn-sm me-2" (click)="editProduct(product)" [disabled]="!product.isActive">Update</button>
+          <button class="btn btn-danger btn-sm" (click)="deleteProduct(product.productId)" [disabled]="!product.isActive">Delete</button>
+        </div>
+
+        <div *ngIf="updateSuccess" class="alert alert-success mt-2">{{ updateSuccess }}</div>
+        <div *ngIf="updateError" class="alert alert-danger mt-2">{{ updateError }}</div>
+        <div *ngIf="deleteSuccess" class="alert alert-success mt-2">{{ deleteSuccess }}</div>
+        <div *ngIf="deleteError" class="alert alert-danger mt-2">{{ deleteError }}</div>
+      </div>
+
+      <div *ngIf="activeTab==='editProduct'">
+        <h4>Update Product</h4>
+        <input [(ngModel)]="editingProduct.name" class="form-control mb-2" placeholder="Product Name">
+        <input [(ngModel)]="editingProduct.price" type="number" class="form-control mb-2" placeholder="Price">
+        <input [(ngModel)]="editingProduct.stockQuantity" type="number" class="form-control mb-2" placeholder="Stock Quantity">
+        <button class="btn btn-success" (click)="updateProduct()">Save Changes</button>
+      </div>
+
+      <div *ngIf="activeTab==='addProduct'">
+        <h4>Add Product</h4>
+        <label class="form-label">Product Name</label>
+        <input [(ngModel)]="newProduct.name" class="form-control mb-2" placeholder="Product Name">
+
+        <label class="form-label">Description</label>
+        <textarea [(ngModel)]="newProduct.description" class="form-control mb-2" placeholder="Description"></textarea>
+
+        <label class="form-label">Selling Price</label>
+        <input [(ngModel)]="newProduct.price" type="number" class="form-control mb-2" placeholder="Selling Price">
+
+        <label class="form-label">MRP</label>
+        <input [(ngModel)]="newProduct.mrp" type="number" class="form-control mb-2" placeholder="MRP">
+
+        <label class="form-label">Discount</label>
+        <input [(ngModel)]="newProduct.discount" type="number" class="form-control mb-2" placeholder="Discount (%)">
+
+        <label class="form-label">Stock Quantity</label>
+        <input [(ngModel)]="newProduct.stockQuantity" type="number" class="form-control mb-2" placeholder="Stock Quantity">
+
+        <label class="form-label">Stock Threshold</label>
+        <input [(ngModel)]="newProduct.stockThreshold" type="number" class="form-control mb-2" placeholder="Stock Threshold">
+
+       <!-- Category -->
+<label class="form-label">Categories</label>
+
+<select [(ngModel)]="newProduct.categoryId"
+        class="form-select mb-2">
+
+  <option [ngValue]="null" disabled>Select Category</option>
+
+  <option *ngFor="let cat of categories"
+           [ngValue]="cat.id">
+    {{ cat.name }}
+  </option>
+
+</select>
+
+
+        <label class="form-label">Product Image</label>
+        <input type="file" (change)="onFileSelected($event)" class="form-control mb-2">
+
+        <button class="btn btn-primary w-100" (click)="addProduct()" [disabled]="isAddingProduct">
+          <span *ngIf="!isAddingProduct">Add Product</span>
+          <span *ngIf="isAddingProduct">
+            <span class="spinner-border spinner-border-sm me-2"></span> Adding...
+          </span>
+        </button>
+
+        <div *ngIf="addSuccess" class="alert alert-success mt-2">{{ addSuccess }}</div>
+        <div *ngIf="addError" class="alert alert-danger mt-2">{{ addError }}</div>
+      </div>
+
+      <div *ngIf="activeTab==='profile'">
+        <h4>Seller Profile</h4>
+        <p>Name: {{ profile?.name }}</p>
+        <p>Email: {{ profile?.email }}</p>
+        <p>Business: {{ profile?.businessDetails }}</p>
+      </div>
+
+      <div *ngIf="activeTab==='password'">
+        <input type="password" [(ngModel)]="newPassword" placeholder="New Password" class="form-control mb-2">
+        <button class="btn btn-primary" (click)="changePassword()">Update Password</button>
+        <div *ngIf="passwordSuccess" class="alert alert-success mt-2">{{ passwordSuccess }}</div>
+        <div *ngIf="passwordError" class="alert alert-danger mt-2">{{ passwordError }}</div>
+      </div>
+
+      <div *ngIf="activeTab==='notifications'">
+        <div *ngFor="let n of notifications" class="alert alert-info">{{ n.message }}</div>
+      </div>
+
+      <div *ngIf="activeTab==='reviews'">
+        <app-seller-reviews></app-seller-reviews>
+      </div>
+
+    </div>
+  </div>
+</div>

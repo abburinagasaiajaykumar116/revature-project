@@ -44,6 +44,12 @@ export const routes: Routes = [
     import('./pages/shop/shop.component')
       .then(m => m.ShopComponent)
 },
+{
+  path: 'about-us',
+  loadComponent: () =>
+    import('./features/about-us/about-us.component') 
+      .then(m => m.AboutUsComponent)
+},
   {
     path: 'cart',
     canActivate: [authGuard, roleGuard],

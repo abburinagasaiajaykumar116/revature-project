@@ -1,8 +1,10 @@
 package org.example.revshop.service.impl;
 
+import lombok.RequiredArgsConstructor;
 import org.example.revshop.model.Notification;
 import org.example.revshop.repos.NotificationRepository;
 import org.example.revshop.service.NotificationService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

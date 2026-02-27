@@ -1,0 +1,132 @@
+<div class="container mt-5">
+
+  <div class="row">
+
+    <!-- LEFT MENU -->
+    <div class="col-md-3">
+      <ul class="list-group">
+
+        <li class="list-group-item"  [class.active]="activeTab==='dashboard'"
+            (click)="activeTab='dashboard'" style="cursor:pointer">
+          Dashboard
+        </li>
+
+        <li class="list-group-item" [class.active]="activeTab==='orders'"
+            (click)="activeTab='orders'; loadOrders()" style="cursor:pointer">
+          Orders
+        </li>
+
+        <li class="list-group-item" [class.active]="activeTab==='profile'"
+            (click)="activeTab='profile'" style="cursor:pointer">
+          Profile
+        </li>
+
+        <li class="list-group-item"    [class.active]="activeTab==='password'"
+            (click)="activeTab='password'" style="cursor:pointer">
+          Change Password
+        </li>
+
+        <li class="list-group-item"  [class.active]="activeTab==='notifications'"
+            (click)="activeTab='notifications'; loadNotifications()" style="cursor:pointer">
+          Notifications
+        </li>
+
+        <li class="list-group-item text-danger"
+            (click)="logout()" style="cursor:pointer">
+          Logout
+        </li>
+
+      </ul>
+    </div>
+
+    <!-- RIGHT CONTENT -->
+    <div class="col-md-9">
+
+      <!-- DASHBOARD -->
+      <div *ngIf="activeTab==='dashboard'">
+        <h4>Welcome {{ profile?.name }}</h4>
+        <p>Email: {{ profile?.email }}</p>
+        <p>Role: {{ profile?.role }}</p>
+      </div>
+
+      
+<!-- ORDERS -->
+<div *ngIf="activeTab==='orders'">
+
+  <h4>Orders</h4>
+
+  <div *ngFor="let order of orders" class="card mb-3 p-3">
+
+    <h5>Order ID: {{ order.orderId }}</h5>
+    <p>Status: {{ order.status }}</p>
+
+    <div *ngFor="let item of order.items">
+      {{ item.productName }} -
+      {{ item.quantity }} x ₹{{ item.price }}
+    </div>
+
+    <hr>
+    <strong>Total: ₹{{ order.totalAmount }}</strong>
+
+  </div>
+
+</div>
+
+      <!-- PROFILE -->
+      <div *ngIf="activeTab==='profile'">
+        <h4>User Profile</h4>
+        <p>Name: {{ profile?.name }}</p>
+        <p>Email: {{ profile?.email }}</p>
+      </div>
+
+      <!-- CHANGE PASSWORD -->
+      <div *ngIf="activeTab==='password'">
+
+        <input type="password"
+               [(ngModel)]="newPassword"
+               placeholder="New Password"
+               class="form-control mb-2">
+
+        <button class="btn btn-primary"
+                (click)="changePassword()">
+          Update Password
+        </button>
+        <div *ngIf="successMessage"
+     class="alert alert-success alert-dismissible fade show mt-2">
+
+  {{ successMessage }}
+
+  <button type="button"
+          class="btn-close"
+          (click)="successMessage=''">
+  </button>
+</div>
+
+<div *ngIf="errorMessage"
+     class="alert alert-danger alert-dismissible fade show mt-2">
+
+  {{ errorMessage }}
+
+  <button type="button"
+          class="btn-close"
+          (click)="errorMessage=''">
+  </button>
+</div>
+
+      </div>
+
+      <!-- NOTIFICATIONS -->
+      <div *ngIf="activeTab==='notifications'">
+
+        <div *ngFor="let n of notifications"
+             class="alert alert-info">
+          {{ n.message }}
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>

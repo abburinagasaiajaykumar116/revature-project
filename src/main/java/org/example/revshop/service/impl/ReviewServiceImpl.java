@@ -23,15 +23,23 @@ public class ReviewServiceImpl implements ReviewService {
     private final ProductRepository productRepo;
     private  final UserRepository userRepo;
     @Transactional
-    public void giveReview(Long userId, Long productId,
-                           Integer rating, String comment) {
+    public ReviewView giveReview(Integer userId,
+                                 Long productId,
+                                 Integer rating,
+                                 String comment) {
 
         User user = userRepo.findById(userId).orElseThrow();
-        Product product = productRepo.findById(Math.toIntExact(productId)).orElseThrow();
+        Product product = productRepo.findById(productId).orElseThrow();
 
         Review review = new Review(user, product, rating, comment);
 
         reviewRepo.save(review);
+
+        return new ReviewView(
+                user.getName(),   // or getFullName()
+                rating,
+                comment
+        );
     }
     @Override
     public List<ReviewView> viewReviewsForProduct(Long productId) {

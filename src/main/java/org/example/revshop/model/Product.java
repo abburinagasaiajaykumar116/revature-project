@@ -8,58 +8,6 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "products")
 public class Product {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "product_id")
-    private Long productId;
-
-    @Column(name = "seller_id", nullable = false)
-    private Integer sellerId;
-
-    @Column(name = "category_id", nullable = false)
-    private Integer categoryId;
-
-    @Column(nullable = false)
-    private String name;
-
-    @Column(length = 2000)
-    private String description;
-
-    private Double price;
-    private Double mrp;
-    private Double discount;
-
-    @Column(name = "stock_quantity")
-    private Integer stockQuantity;
-
-    @Column(name = "stock_threshold")
-    private Integer stockThreshold;
-
-    @Column(name = "is_active")
-    private Boolean isActive = true;
-
-    @Column(name = "image_url")
-    private String imageUrl;
-
-    @Column(name = "created_at")
-    private java.time.LocalDateTime createdAt;
-
-    public Product(Long productId, Integer sellerId, Integer categoryId, String name, String description, Double price, Double mrp, Double discount, Integer stockQuantity, Integer stockThreshold, Boolean isActive, String imageUrl, LocalDateTime createdAt) {
-        this.productId = productId;
-        this.sellerId = sellerId;
-        this.categoryId = categoryId;
-        this.name = name;
-        this.description = description;
-        this.price = price;
-        this.mrp = mrp;
-        this.discount = discount;
-        this.stockQuantity = stockQuantity;
-        this.stockThreshold = stockThreshold;
-        this.isActive = isActive;
-        this.imageUrl = imageUrl;
-        this.createdAt = createdAt;
-    }
-    public Product(){}
 
     public Long getProductId() {
         return productId;
@@ -165,7 +113,56 @@ public class Product {
         this.createdAt = createdAt;
     }
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "product_id")
+    private Long productId;
 
+    @Column(name = "seller_id", nullable = false)
+    private Integer sellerId;
 
+    @Column(name = "category_id", nullable = false)
+    private Integer categoryId;
 
+    @Column(nullable = false)
+    private String name;
+
+    @Column(length = 2000)
+    private String description;
+
+    private Double price;
+    private Double mrp;
+    private Double discount;
+
+    @Column(name = "stock_quantity")
+    private Integer stockQuantity;
+
+    @Column(name = "stock_threshold")
+    private Integer stockThreshold;
+
+    @Column(name = "is_active")
+    private Boolean isActive = true;
+
+    @Column(name = "image_url")
+    private String imageUrl;
+
+    public Product(Long productId, Integer sellerId, Integer categoryId, String name, String description, Double price, Double mrp, Double discount, Integer stockQuantity, Integer stockThreshold, Boolean isActive, String imageUrl, LocalDateTime createdAt) {
+        this.productId = productId;
+        this.sellerId = sellerId;
+        this.categoryId = categoryId;
+        this.name = name;
+        this.description = description;
+        this.price = price;
+        this.mrp = mrp;
+        this.discount = discount;
+        this.stockQuantity = stockQuantity;
+        this.stockThreshold = stockThreshold;
+        this.isActive = isActive;
+        this.imageUrl = imageUrl;
+        this.createdAt = createdAt;
+    }
+    public Product(){}
+
+    @Column(name = "created_at")
+    private java.time.LocalDateTime createdAt;
 }

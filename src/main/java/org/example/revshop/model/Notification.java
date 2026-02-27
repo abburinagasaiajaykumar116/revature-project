@@ -1,7 +1,6 @@
 package org.example.revshop.model;
 
 import jakarta.persistence.*;
-
 import java.time.LocalDateTime;
 
 @Entity

@@ -56,5 +56,4 @@ public class CartResponse {
         this.quantity = quantity;
     }
 
-    // getters
 }

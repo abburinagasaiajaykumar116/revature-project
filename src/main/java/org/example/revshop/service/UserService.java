@@ -12,7 +12,7 @@ public interface UserService {
 
     public User login(String email, String password);
 
-    public void changePassword(Long userId, String newPassword);
+    public void changePassword(Integer userId, String newPassword);
 
     public void forgotPassword(String email, String answer, String newPassword) ;
 

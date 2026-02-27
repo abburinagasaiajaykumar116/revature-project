@@ -8,7 +8,7 @@ import org.example.revshop.model.Review;
 import java.util.List;
 
 public interface ReviewService {
-    public void giveReview(Long userId,
+    public ReviewView giveReview(Integer userId,
                            Long productId,
                            Integer rating,
                            String comment) ;

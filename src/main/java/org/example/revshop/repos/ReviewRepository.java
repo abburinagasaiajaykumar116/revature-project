@@ -16,6 +16,7 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
     @Query("""
         SELECT new org.example.revshop.dtos.SellerReviewView(
             p.name,
+                r.user.name,
             r.rating,
             r.comment
         )

@@ -6,6 +6,7 @@ import { RouterModule, ActivatedRoute, Router } from '@angular/router';
 import { FavoriteService } from '../../core/services/favorite.service';
 import { CartService } from '../../core/services/cart.service';
 import { Observable } from 'rxjs';
+
 @Component({
   selector: 'app-shop',
   standalone: true,
@@ -14,13 +15,14 @@ import { Observable } from 'rxjs';
   styleUrl: './shop.component.css'
 })
 export class ShopComponent implements OnInit {
-   favorites$!: Observable<number[]>;
+  favorites$!: Observable<number[]>;
   categories: any[] = [];
   products: any[] = [];
   selectedCategory: number | null = null;
-
   quantityMap: { [key: number]: number } = {};
- 
+
+
+  isCategoryCollapsed: boolean = false;
 
   constructor(
     private http: HttpClient,
@@ -29,58 +31,42 @@ export class ShopComponent implements OnInit {
     private favoriteService: FavoriteService,
     private cartService: CartService
   ) {
-   this.favorites$ = this.favoriteService.favorites$;
+    this.favorites$ = this.favoriteService.favorites$;
   }
 
-ngOnInit() {
+  ngOnInit() {
+    this.loadCategories();
 
-  this.loadCategories();
+    this.route.queryParams.subscribe(params => {
+      const keyword = params['keyword'];
+      if (keyword && keyword.trim() !== '') {
+        this.selectedCategory = null;
+        this.http.get<any[]>(
+          `${environment.apiBaseUrl}/products/search`,
+          { params: { keyword: keyword.trim() } }
+        ).subscribe(res => {
+          this.products = res;
+          this.initQuantities();
+        });
+      } else {
+        this.loadAllProducts();
+      }
+    });
+  }
 
-  
-
-
-  this.route.queryParams.subscribe(params => {
-
-    const keyword = params['keyword'];
-
-    if (keyword && keyword.trim() !== '') {
-
-      this.selectedCategory = null;
-
-      this.http.get<any[]>(
-        `${environment.apiBaseUrl}/products/search`,
-        { params: { keyword: keyword.trim() } }
-      ).subscribe(res => {
-        this.products = res;
-        this.initQuantities();
-      });
-
-    } else {
-      this.loadAllProducts();
+  toggleWishlist(productId: number) {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      this.router.navigate(['/my-account']);
+      return;
     }
-  });
-}
 
-  // ================= FAVORITES =================
-
-
-
-toggleWishlist(productId: number) {
-
-  const token = localStorage.getItem('token');
-  if (!token) {
-    this.router.navigate(['/my-account']);
-    return;
+    if (this.favoriteService.isFavorite(productId)) {
+      this.favoriteService.removeFavorite(productId);
+    } else {
+      this.favoriteService.addFavorite(productId);
+    }
   }
-
-  if (this.favoriteService.isFavorite(productId)) {
-    this.favoriteService.removeFavorite(productId);
-  } else {
-    this.favoriteService.addFavorite(productId);
-  }
-}
-
-  // ================= PRODUCTS =================
 
   loadCategories() {
     this.http.get<any[]>(`${environment.apiBaseUrl}/categories`)
@@ -89,7 +75,6 @@ toggleWishlist(productId: number) {
 
   loadAllProducts() {
     this.selectedCategory = null;
-
     this.http.get<any[]>(`${environment.apiBaseUrl}/products`)
       .subscribe(res => {
         this.products = res;
@@ -99,7 +84,6 @@ toggleWishlist(productId: number) {
 
   loadByCategory(categoryId: number) {
     this.selectedCategory = categoryId;
-
     this.http.get<any[]>(
       `${environment.apiBaseUrl}/products/category/${categoryId}`
     ).subscribe(res => {
@@ -107,9 +91,6 @@ toggleWishlist(productId: number) {
       this.initQuantities();
     });
   }
-
-  // ================= QUANTITY =================
-
   initQuantities() {
     this.products.forEach(p => {
       if (!this.quantityMap[p.productId]) {
@@ -128,19 +109,15 @@ toggleWishlist(productId: number) {
     }
   }
 
-  // ================= CART =================
 
   addToCart(product: any) {
-
     const token = localStorage.getItem('token');
-
     if (!token) {
       this.router.navigate(['/my-account']);
       return;
     }
 
     const quantity = this.quantityMap[product.productId] || 1;
-
     this.cartService.addToCart(product.productId, quantity)
       .subscribe({
         next: () => {
@@ -149,8 +126,6 @@ toggleWishlist(productId: number) {
         error: () => alert('Failed to add to cart')
       });
   }
-
-  // ================= VIEW PRODUCT =================
 
   viewProduct(productId: number) {
     this.router.navigate(['/product', productId]);

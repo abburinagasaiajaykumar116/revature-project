@@ -25,10 +25,10 @@ addToCart(productId: number, quantity: number = 1) {
     `${environment.apiBaseUrl}/cart`,
     { productId, quantity }
   ).pipe(
-    tap(() => this.loadCart()) // ✅ auto refresh header
+    tap(() => this.loadCart()) 
   );
 }
-  // update quantity
+  
 updateQuantity(productId: number, quantity: number) {
   return this.http.put(
     `${environment.apiBaseUrl}/cart/${productId}`,
@@ -37,7 +37,6 @@ updateQuantity(productId: number, quantity: number) {
   );
 }
 
-// clear cart
 clearCart() {
   return this.http.delete(
     `${environment.apiBaseUrl}/cart/clear`,

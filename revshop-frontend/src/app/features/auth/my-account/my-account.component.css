@@ -1,0 +1,12 @@
+.btn-group .btn {
+  border-radius: 0;
+}
+
+.btn-dark {
+  background-color: #000;
+  color: #fff;
+}
+
+.btn-light {
+  background-color: #e9ecef;
+}

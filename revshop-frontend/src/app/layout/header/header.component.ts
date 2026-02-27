@@ -28,7 +28,7 @@ searchKeyword: string = '';
     this.calculateSubtotal();
   });
 
-  this.cartService.loadCart(); // initial load
+  this.cartService.loadCart(); 
 }
 
 toggleCart() {

@@ -1,9 +1,9 @@
-<!-- 1️⃣ Top Blue Bar -->
+
 <div class="top-bar text-center text-white py-1">
   Welcome to the RevShop!
 </div>
 
-<!-- 2️⃣ Info Strip -->
+
 <div class="info-bar py-2">
   <div class="container d-flex justify-content-between small">
 
@@ -21,26 +21,22 @@
   </div>
 </div>
 
-<!-- 3️⃣ Main Header -->
 <div class="main-header py-3 shadow-sm">
   <div class="container d-flex align-items-center justify-content-between">
 
-    <!-- Logo -->
+
     <div class="logo fw-bold fs-4 text-primary">
       RevShop.com
       <div class="small text-muted">Safe • Secure • Reliable Shopping</div>
     </div>
 
-    <!-- Search -->
   <div class="search-box mx-4 flex-grow-1">
   <input class="form-control search-input"
          [(ngModel)]="searchKeyword"
          (keyup.enter)="searchProducts()"
          placeholder="Search for products...">
 </div>
-    <!--Cart-->
-   <!-- Cart Icon -->
-<!-- Cart Icon -->
+   
 <div class="icon-item position-relative"
      [style.visibility]="showCart ? 'hidden' : 'visible'"
      (click)="openCart()">
@@ -56,7 +52,6 @@
 </div>
 
 
-<!-- CART MODAL -->
 <div class="cart-overlay"
      *ngIf="showCart"
      (click)="closeCart()">
@@ -72,7 +67,7 @@
     <div *ngFor="let item of cartItems"
          class="cart-item">
 
-   
+
 
       <div>
         <div>{{ item.productName }}</div>
@@ -105,18 +100,17 @@
 </div>
 
 
-  
 
-  
+
+
 
   </div>
 </div>
 
-<!-- 4️⃣ Navigation Bar -->
 <nav class="navbar navbar-expand-lg navbar-light bg-white border-top">
   <div class="container">
 
-   
+
 
     <div class="collapse navbar-collapse">
 
@@ -135,7 +129,7 @@
 </li>
 
         <li class="nav-item">
-          <a class="nav-link">ABOUT US</a>
+          <a class="nav-link" routerLink="/about-us" routerLinkActive="active">ABOUT US</a>
         </li>
 
         <li class="nav-item">

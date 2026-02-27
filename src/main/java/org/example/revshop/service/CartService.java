@@ -8,11 +8,11 @@ import java.util.List;
 
 public interface CartService{
 
-    public Cart getOrCreateCart(Integer userId) ;
-    public void add(Integer userId, Long productId, int qty) ;
+        public Cart getOrCreateCart(Integer userId) ;
+        public void add(Integer userId, Long productId, int qty) ;
 
-    public List<CartResponse> view(Integer userId) ;
-    public void remove(Integer userId, Long productId);
+        public List<CartResponse> view(Integer userId) ;
+        public void remove(Integer userId, Long productId);
     public void updateQuantity(Integer userId,
                                Long productId,
                                int quantity) ;

@@ -2,6 +2,8 @@ package org.example.revshop.service.impl;
 
 import jakarta.transaction.Transactional;
 import org.example.revshop.dtos.CartResponse;
+import org.example.revshop.exception.BadRequestException;
+import org.example.revshop.exception.ResourceNotFoundException;
 import org.example.revshop.model.Cart;
 import org.example.revshop.model.CartItem;
 import org.example.revshop.model.Product;
@@ -23,6 +25,8 @@ public class CartServiceImpl implements CartService {
     @Autowired private CartItemRepository itemRepo;
 
     public Cart getOrCreateCart(Integer userId) {
+        if (userId == null)
+            throw new BadRequestException("User id is required");
 
         return cartRepo.findByUserId(userId)
                 .orElseGet(() -> {
@@ -33,6 +37,16 @@ public class CartServiceImpl implements CartService {
     }
 
     public void add(Integer userId, Long productId, int qty) {
+        if (productId == null)
+            throw new BadRequestException("Product id is required");
+
+        if (qty <= 0)
+            throw new BadRequestException("Quantity must be greater than 0");
+
+        // ensure product exists
+        productRepo.findById(productId)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException("Product not found with id " + productId));
 
         Cart cart = getOrCreateCart(userId);
 
@@ -52,18 +66,20 @@ public class CartServiceImpl implements CartService {
 
     public List<CartResponse> view(Integer userId) {
 
+
         Cart cart = cartRepo.findByUserId(userId)
-                .orElseThrow(() -> new RuntimeException("Cart not found"));
+                .orElseThrow(() ->
+                        new ResourceNotFoundException("Cart not found for user " + userId));
 
         List<CartItem> items =
                 itemRepo.findByCartId(cart.getCartId());
 
-
         return items.stream().map(item -> {
 
-            Product product =
-                    productRepo.findById(Math.toIntExact(item.getProductId()))
-                            .orElseThrow();
+            Product product = productRepo.findById(item.getProductId())
+                    .orElseThrow(() ->
+                            new ResourceNotFoundException(
+                                    "Product not found with id " + item.getProductId()));
 
             return new CartResponse(
                     item.getCartItemId(),
@@ -90,15 +106,14 @@ public class CartServiceImpl implements CartService {
                                Long productId,
                                int quantity) {
 
-        if (quantity <= 0) {
-            throw new RuntimeException("Quantity must be > 0");
-        }
+        if (quantity <= 0)
+            throw new BadRequestException("Quantity must be greater than 0");
 
         Cart cart = getOrCreateCart(userId);
 
         CartItem item = itemRepo
                 .findByCartIdAndProductId(cart.getCartId(), productId)
-                .orElseThrow(() -> new RuntimeException("Item not found in cart"));
+                .orElseThrow(() -> new ResourceNotFoundException("Item not found in cart"));
 
         item.setQuantity(quantity);
 
@@ -121,3 +136,4 @@ public class CartServiceImpl implements CartService {
 
 
 }
+

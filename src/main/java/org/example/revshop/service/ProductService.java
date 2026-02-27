@@ -11,7 +11,7 @@ public interface ProductService {
 
     public List<Product> viewProductsByCategory(int categoryId);
 
-
+    Product getProductById(Long id);
     public List<Product> searchProducts(String keyword);
 
     public List<Product> viewSellerProducts(int sellerId) ;
@@ -20,5 +20,5 @@ public interface ProductService {
     public boolean updateProduct(Product product);
 
 
-    public boolean deleteProduct(int productId, int sellerId) ;
+    public boolean deleteProduct(Long productId, int sellerId) ;
 }
